@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume | Arnab Bhattacharya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns/dist/date_fns.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices: 
+        - Executive Summary -> Goal: Inform -> Method: Prominent text block on Overview.
+        - Key Metrics (Years, Impact) -> Goal: Impact -> Method: Styled HTML cards on Overview.
+        - Experience Timeline -> Goal: Show Change/Explore -> Method: Chart.js horizontal bar chart. Interaction: Clicking a bar updates a detail view with responsibilities. Justification: Visually represents time and allows drill-down without clutter.
+        - Skills -> Goal: Compare/Organize -> Method: Chart.js Polar Area chart for a skill "fingerprint" and styled HTML tags for a complete list. Interaction: Filtering tags by category. Justification: Offers both a high-level visual summary and detailed specifics.
+        - Education/Awards -> Goal: Inform -> Method: Clean HTML cards. Justification: Clear and direct presentation for factual information.
+        - AI Resume Summary -> Goal: Inform/Generate -> Method: Button triggering LLM call, displaying generated text. Justification: Provides quick, dynamic resume overview.
+        - Interview Question Generator -> Goal: Prepare/Interact -> Method: Button triggering LLM call based on selected experience, displaying questions. Justification: Practical tool for interview preparation.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link.active {
+            background-color: #0284c7;
+            color: white;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #0ea5e9;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="flex min-h-screen">
+        <aside class="w-16 md:w-64 bg-slate-800 text-white p-4 fixed h-full transition-all duration-300">
+            <div class="flex items-center mb-10">
+                <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center font-bold text-xl text-white mr-3">
+                    AB
+                </div>
+                <h1 class="text-xl font-bold hidden md:block">Arnab B.</h1>
+            </div>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#overview" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-700 mb-2">
+                        <span class="text-2xl">📊</span><span class="ml-4 hidden md:block">Overview</span></a></li>
+                    <li><a href="#experience" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-700 mb-2">
+                        <span class="text-2xl">⏳</span><span class="ml-4 hidden md:block">Experience Timeline</span></a></li>
+                    <li><a href="#skills" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-700 mb-2">
+                        <span class="text-2xl">💡</span><span class="ml-4 hidden md:block">Core Competencies</span></a></li>
+                    <li><a href="#education" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-700 mb-2">
+                        <span class="text-2xl">🎓</span><span class="ml-4 hidden md:block">Academic Qualifications</span></a></li>
+                    <li><a href="#awards" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-700">
+                        <span class="text-2xl">🏆</span><span class="ml-4 hidden md:block">Awards</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="ml-16 md:ml-64 p-4 md:p-8 w-full">
+            
+            <header class="mb-8">
+                 <h1 class="text-4xl font-bold text-slate-900">Arnab Bhattacharya</h1>
+                 <p class="text-lg text-sky-700">Software Engineer | Cloud & Microservices Specialist</p>
+                 <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-slate-600">
+                    <span>📧 arnabhattacharya10@gmail.com</span>
+                    <span>📞 (+91) 6289402839</span>
+                 </div>
+            </header>
+
+
+            <section id="overview" class="content-section">
+                <h2 class="text-3xl font-bold border-b-4 border-sky-500 pb-2 mb-6">Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-4xl font-bold text-sky-600">5+</h3>
+                        <p class="text-slate-600 mt-1">Years of Experience</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-4xl font-bold text-sky-600">60%</h3>
+                        <p class="text-slate-600 mt-1">Scalability Improvement</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-4xl font-bold text-sky-600">5</h3>
+                        <p class="text-slate-600 mt-1">Major Awards & Recognitions</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-semibold mb-3">Executive Summary</h3>
+                    <p class="text-slate-700 leading-relaxed" id="executive-summary-text">
+                        This curriculum vitae pertains to an individual possessing an energetic disposition, ambitious aspirations, and a mature problem-solving acumen, with a professional tenure exceeding five years within the domain of software engineering. Demonstrated excellence in collaborative endeavors with various teams has been consistently observed, leading to the accurate and timely achievement of prescribed objectives.
+                    </p>
+                    <button id="generate-summary-btn" class="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors duration-300">
+                        ✨ Generate AI Summary ✨
+                    </button>
+                    <div id="ai-summary-output" class="mt-4 p-4 bg-slate-100 rounded-lg hidden">
+                        <h4 class="font-semibold mb-2">AI-Generated Summary:</h4>
+                        <p class="text-slate-700" id="ai-summary-text"></p>
+                         <div id="ai-summary-loading" class="loading-spinner hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="experience" class="content-section hidden">
+                <h2 class="text-3xl font-bold border-b-4 border-sky-500 pb-2 mb-6">Experience Timeline</h2>
+                <p class="mb-8 text-slate-600">This timeline visualizes the professional journey, highlighting key roles and their durations. Click on any company's bar in the chart to explore the specific contributions and responsibilities associated with that position.</p>
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="experienceChart"></canvas>
+                    </div>
+                    <div id="experience-details" class="mt-8 p-6 bg-slate-50 rounded-lg min-h-[200px]">
+                        <p class="text-slate-500">Select an experience from the chart to see details here.</p>
+                    </div>
+                    <button id="generate-interview-questions-btn" class="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 hidden">
+                        ✨ Generate Interview Questions ✨
+                    </button>
+                    <div id="interview-questions-output" class="mt-4 p-4 bg-slate-100 rounded-lg hidden">
+                        <h4 class="font-semibold mb-2">AI-Generated Interview Questions:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700" id="interview-questions-text"></ul>
+                        <div id="interview-questions-loading" class="loading-spinner hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="content-section hidden">
+                <h2 class="text-3xl font-bold border-b-4 border-sky-500 pb-2 mb-6">Core Competencies</h2>
+                <p class="mb-8 text-slate-600">This section provides a visual and detailed breakdown of technical skills. The chart offers a high-level "fingerprint" of proficiency across key areas, while the tags below provide a comprehensive list of technologies.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                         <h3 class="text-xl font-semibold text-center mb-4">Skill Distribution</h3>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="skillsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <div id="skill-tags">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">Backend & Frameworks</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm">Java (SE 8)</span>
+                                    <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm">Spring Boot</span>
+                                    <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm">Spring Cloud</span>
+                                    <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm">Python</span>
+                                    <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm">C++</span>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h3 class="text-xl font-semibold mb-3">Frontend & Databases</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">React.js</span>
+                                    <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">JavaScript (ES8)</span>
+                                    <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">JSP</span>
+                                    <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">MySQL</span>
+                                    <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Oracle DB</span>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h3 class="text-xl font-semibold mb-3">DevOps & Cloud</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Docker</span>
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Kubernetes</span>
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Jenkins</span>
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Spinnaker</span>
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Tibco EMS</span>
+                                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">CI/CD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="content-section hidden">
+                <h2 class="text-3xl font-bold border-b-4 border-sky-500 pb-2 mb-6">Academic Qualifications</h2>
+                 <p class="mb-8 text-slate-600">A foundation of formal education in technology and engineering, culminating in advanced studies in Artificial Intelligence.</p>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-xl font-semibold text-slate-900">Master of Technology in Artificial Intelligence</h3>
+                        <p class="text-slate-600">Indian Institute of Technology Patna</p>
+                        <p class="text-sm text-slate-500 mt-1">2024 - 2026 (Anticipated Completion)</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-xl font-semibold text-slate-900">Bachelor of Technology in Electronics and Communication Engineering</h3>
+                        <p class="text-slate-600">Institute of Engineering & Management, Saltlake (M.A.K.A.U.T)</p>
+                        <p class="text-sm text-slate-500 mt-1">2015 - 2019 | CGPA: 8.15/10</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="awards" class="content-section hidden">
+                <h2 class="text-3xl font-bold border-b-4 border-sky-500 pb-2 mb-6">Distinctions and Commendations</h2>
+                <p class="mb-8 text-slate-600">A collection of awards and official recognitions received for exceptional performance, technical skill, and impactful contributions throughout the professional career.</p>
+                <ul class="space-y-4 list-none">
+                    <li class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
+                        <span class="text-2xl mr-4">🏅</span>
+                        <div>
+                            <h3 class="font-semibold">LLAMA Award for the best employee in Q1 2024</h3>
+                            <p class="text-sm text-slate-500">ServiceNow</p>
+                        </div>
+                    </li>
+                    <li class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
+                         <span class="text-2xl mr-4">💌</span>
+                        <div>
+                            <h3 class="font-semibold">Client Appreciation Letter</h3>
+                            <p class="text-sm text-slate-500">For outstanding go-live phase support</p>
+                        </div>
+                    </li>
+                    <li class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
+                         <span class="text-2xl mr-4">🚀</span>
+                        <div>
+                            <h3 class="font-semibold">Identified as "Hi-Talent" & Awarded Early Promotion</h3>
+                            <p class="text-sm text-slate-500">Tata Consultancy Services</p>
+                        </div>
+                    </li>
+                     <li class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
+                         <span class="text-2xl mr-4">🌟</span>
+                        <div>
+                            <h3 class="font-semibold">TCS – On the Spot Award for Performance</h3>
+                            <p class="text-sm text-slate-500">Tata Consultancy Services (December 15, 2020)</p>
+                        </div>
+                    </li>
+                    <li class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
+                        <span class="text-2xl mr-4">💯</span>
+                        <div>
+                            <h3 class="font-semibold">School Topper in Mathematics</h3>
+                            <p class="text-sm text-slate-500">12th All India Senior School Certificate Examination (AISSCE)</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const resumeData = {
+            fullFormalResume: `
+# Arnab Bhattacharya: Professional Curriculum Vitae
+
+**Electronic Mail Address:** arnabhattacharya10@gmail.com | **Telephonic Contact:** (+91) 6289402839
+
+---
+
+## Executive Summary
+
+This curriculum vitae pertains to an individual possessing an energetic disposition, ambitious aspirations, and a mature problem-solving acumen, with a professional tenure exceeding five years within the domain of software engineering. Demonstrated excellence in collaborative endeavors with various teams has been consistently observed, leading to the accurate and timely achievement of prescribed objectives.
+
+---
+
+## Core Competencies
+
+* **Programming Paradigms & Frameworks:** Proficiency is evinced in Java (inclusive of Spring Boot, Spring Cloud, and Java SE 8), Python, C++, and JavaScript (specifically ES8).
+* **Client-Side Interface Technologies:** Expertise encompasses React.js and JSP.
+* **Database Management Systems:** Demonstrated capability with MySQL and Oracle DB.
+* **DevOps & Cloud Infrastructure:** Comprehensive understanding and practical application of Docker, Kubernetes, Continuous Integration/Continuous Deployment (Jenkins, Spinnaker), and Stream Processing methodologies (Tibco EMS, Spring Cloud Stream).
+* **System Monitoring & Performance Analysis:** Competence in the utilization of jMeter for load testing, jConsole for CPU and memory profiling, and Newrelic for application infrastructure monitoring.
+* **Development Tools & Methodologies:** Proficient application of Postman for API testing, Microservice Architecture principles, Singleton Design Pattern implementation, Asynchronous Processing techniques, and the creation of comprehensive Design Documentation.
+
+---
+
+## Professional Engagements
+
+**Software Engineer** | ServiceNow | April 2023 - Present
+
+* Collaboration was undertaken with Product Managers for the purpose of requirements elicitation and subsequent analysis, culminating in the translation thereof into robust and high-impact features.
+* Application development and construction were executed upon the ServiceNow platform.
+* Close liaison was maintained with Quality Engineering personnel for the resolution of identified defects, alongside the provision of requisite support for the remediation of production-related issues.
+* System performance was subjected to rigorous analysis, and bottlenecks were identified, resulting in an augmentation of overall efficiency and scalability by a quantifiable margin of 60% through comprehensive code refactoring and the elimination of redundant elements.
+* Asynchronous processing was integrated to effectuate the streamlining of execution flow and a reduction in processing time.
+* Comprehensive design documentation, detailing system designs, user guides, and technical specifications, was meticulously generated.
+
+**Software Engineer 2** | Oracle Cerner | December 2021 - April 2023
+
+* An event-driven Microservice architecture was conceptualized and implemented utilizing Spring Cloud, underpinned by a MySQL database, and incorporating a singleton design pattern.
+* Asynchronous stream processing was effectuated through the deployment of Spring Cloud Stream in conjunction with Tibco EMS.
+* A user interface was developed utilizing React.js, purposed for the logging of specific transactions and their corresponding request/response data.
+* Conducted comprehensive performance testing including load testing with jMeter, CPU/memory profiling with jConsole, and infrastructure monitoring with Newrelic.
+
+**Software Developer** | Tata Consultancy Services | July 2019 - December 2021
+
+* Contribution was rendered to the development of an Insurance web portal, which was constructed utilizing Spring MVC Architecture and supported by an Oracle Database.
+* Defects identified within the backend Rules Engine were systematically rectified.
+* New features were incorporated in accordance with explicit client requirements.
+* Support was extended during the application's go-live phase, and client issues were resolved with immediate and decisive actions.
+
+**Data Analytics Intern** | Central Drug Research Institute (CSIR-CDRI) | January 2019 – May 2019
+
+* Information pertaining to patents was extracted from the United States Patent and Trademark Office (USPTO) Website.
+* Data analysis methodologies were applied to samples of US Venture Capitalist data, facilitating the identification of the top ten venture capitalists and the subsequent development of a recommendation system.
+
+---
+
+## Academic Qualifications
+
+**Master of Technology in Artificial Intelligence** | Indian Institute of Technology Patna | 2024-2026 (Anticipated Completion)
+**Bachelor of Technology in Electronics and Communication Engineering** | Institute of Engineering & Management, Saltlake (Maulana Abul Kalam Azad University of Technology) | 2015-2019 | Cumulative Grade Point Average: 8.15/10
+
+---
+
+## Distinctions and Commendations
+
+* The LLAMA Award was conferred for exceptional employee performance during the first quarter of 2024.
+* A letter of appreciation was received from a client, acknowledging outstanding contributions during the go-live phase.
+* Identification as a "Hi-Talent" within Tata Consultancy Services led to an expedited promotion.
+* The TCS – On the Spot Award for Performance was bestowed on December 15, 2020.
+* Attained the distinction of School Topper in Mathematics during the 12th All India Senior School Certificate Examination (AISSCE).
+            `,
+            experience: [
+                {
+                    company: "CSIR-CDRI (Intern)",
+                    role: "Data Analytics Intern",
+                    start: "2019-01-01",
+                    end: "2019-05-01",
+                    details: [
+                        "Extracted information pertaining to patents from the United States Patent and Trademark Office (USPTO) Website.",
+                        "Applied data analysis methodologies to samples of US Venture Capitalist data, facilitating the identification of the top ten venture capitalists and the subsequent development of a recommendation system."
+                    ]
+                },
+                {
+                    company: "Tata Consultancy Services",
+                    role: "Software Developer",
+                    start: "2019-07-01",
+                    end: "2021-12-01",
+                    details: [
+                        "Contributed to the development of an Insurance web portal, which was constructed utilizing Spring MVC Architecture and supported by an Oracle Database.",
+                        "Defects identified within the backend Rules Engine were systematically rectified.",
+                        "New features were incorporated in accordance with explicit client requirements.",
+                        "Support was extended during the application's go-live phase, and client issues were resolved with immediate and decisive actions."
+                    ]
+                },
+                 {
+                    company: "Oracle Cerner",
+                    role: "Software Engineer 2",
+                    start: "2021-12-01",
+                    end: "2023-04-01",
+                    details: [
+                        "An event-driven Microservice architecture was conceptualized and implemented utilizing Spring Cloud, underpinned by a MySQL database, and incorporating a singleton design pattern.",
+                        "Asynchronous stream processing was effectuated through the deployment of Spring Cloud Stream in conjunction with Tibco EMS.",
+                        "A user interface was developed utilizing React.js, purposed for the logging of specific transactions and their corresponding request/response data.",
+                        "Conducted comprehensive performance testing including load testing with jMeter, CPU/memory profiling with jConsole, and infrastructure monitoring with Newrelic."
+                    ]
+                },
+                {
+                    company: "ServiceNow",
+                    role: "Software Engineer",
+                    start: "2023-04-01",
+                    end: new Date().toISOString().split('T')[0], // Today
+                    details: [
+                        "Collaboration was undertaken with Product Managers for the purpose of requirements elicitation and subsequent analysis, culminating in robust features.",
+                        "Application development and construction were executed upon the ServiceNow platform.",
+                        "System performance was subjected to rigorous analysis and bottlenecks were identified, resulting in an augmentation of overall efficiency and scalability by 60%.",
+                        "Asynchronous processing was integrated to effectuate the streamlining of execution flow and a reduction in processing time."
+                    ]
+                }
+            ],
+            skills: {
+                labels: ['Backend (Java/Spring)', 'DevOps & Cloud', 'Databases', 'Frontend (JS/React)', 'Core CS'],
+                data: [90, 85, 80, 75, 80]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const generateSummaryBtn = document.getElementById('generate-summary-btn');
+            const aiSummaryOutput = document.getElementById('ai-summary-output');
+            const aiSummaryText = document.getElementById('ai-summary-text');
+            const aiSummaryLoading = document.getElementById('ai-summary-loading');
+            const generateInterviewQuestionsBtn = document.getElementById('generate-interview-questions-btn');
+            const interviewQuestionsOutput = document.getElementById('interview-questions-output');
+            const interviewQuestionsText = document.getElementById('interview-questions-text');
+            const interviewQuestionsLoading = document.getElementById('interview-questions-loading');
+
+            let currentSelectedExperienceIndex = -1; // To keep track of the selected experience for interview questions
+
+            const setActiveLink = (hash) => {
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            };
+
+            const showSection = (hash) => {
+                contentSections.forEach(section => {
+                    if (`#${section.id}` === hash) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            };
+            
+            const handleNavigation = () => {
+                const hash = window.location.hash || '#overview';
+                setActiveLink(hash);
+                showSection(hash);
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const hash = e.currentTarget.getAttribute('href');
+                    window.location.hash = hash;
+                });
+            });
+            
+            window.addEventListener('hashchange', handleNavigation);
+            handleNavigation();
+
+            const experienceDetailsContainer = document.getElementById('experience-details');
+
+            const updateExperienceDetails = (index) => {
+                currentSelectedExperienceIndex = index;
+                if (index < 0 || index >= resumeData.experience.length) {
+                    experienceDetailsContainer.innerHTML = `<p class="text-slate-500">Select an experience from the chart to see details here.</p>`;
+                    generateInterviewQuestionsBtn.classList.add('hidden');
+                    interviewQuestionsOutput.classList.add('hidden');
+                    return;
+                }
+                const item = resumeData.experience[index];
+                let detailsHtml = `
+                    <h3 class="text-xl font-bold text-slate-800">${item.role}</h3>
+                    <p class="text-md text-sky-700 font-semibold mb-4">${item.company}</p>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700">
+                        ${item.details.map(d => `<li>${d}</li>`).join('')}
+                    </ul>
+                `;
+                experienceDetailsContainer.innerHTML = detailsHtml;
+                generateInterviewQuestionsBtn.classList.remove('hidden');
+                interviewQuestionsOutput.classList.add('hidden'); // Hide previous questions
+            };
+
+            const ctxExperience = document.getElementById('experienceChart').getContext('2d');
+            new Chart(ctxExperience, {
+                type: 'bar',
+                data: {
+                    labels: resumeData.experience.map(exp => exp.company),
+                    datasets: [{
+                        label: 'Experience Duration',
+                        data: resumeData.experience.map(exp => [new Date(exp.start).getTime(), new Date(exp.end).getTime()]),
+                        backgroundColor: '#0ea5e9',
+                        borderColor: '#0284c7',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                           type: 'time',
+                           time: {
+                               unit: 'year'
+                           },
+                           min: new Date(resumeData.experience[0].start).getTime(),
+                           max: new Date().getTime(),
+                           ticks: {
+                               font: {
+                                   family: "'Inter', sans-serif"
+                               }
+                           }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const start = new Date(context.raw[0]).toLocaleDateString();
+                                    const end = new Date(context.raw[1]).toLocaleDateString();
+                                    return `${context.dataset.label}: ${start} - ${end}`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            updateExperienceDetails(index);
+                        }
+                    }
+                }
+            });
+
+            const ctxSkills = document.getElementById('skillsChart').getContext('2d');
+            new Chart(ctxSkills, {
+                type: 'polarArea',
+                data: {
+                    labels: resumeData.skills.labels,
+                    datasets: [{
+                        label: 'Skill Proficiency',
+                        data: resumeData.skills.data,
+                        backgroundColor: [
+                            'rgba(14, 165, 233, 0.6)',
+                            'rgba(20, 184, 166, 0.6)',
+                            'rgba(99, 102, 241, 0.6)',
+                            'rgba(234, 179, 8, 0.6)',
+                            'rgba(244, 63, 94, 0.6)'
+                        ],
+                        borderColor: [
+                            '#0284c7',
+                            '#0d9488',
+                            '#4f46e5',
+                            '#ca8a04',
+                            '#e11d48'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                       r: {
+                           pointLabels: {
+                               display: true,
+                               centerPointLabels: true,
+                               font: {
+                                   size: 14,
+                                   family: "'Inter', sans-serif"
+                               }
+                           },
+                           ticks: {
+                               backdropColor: 'rgba(255, 255, 255, 0.75)'
+                           }
+                       }
+                    },
+                    plugins: {
+                        legend: {
+                           position: 'bottom',
+                           labels: {
+                               font: {
+                                   family: "'Inter', sans-serif"
+                               }
+                           }
+                        }
+                    }
+                }
+            });
+
+            // Gemini API Integration Functions
+            async function callGeminiAPI(prompt, outputElement, loadingElement) {
+                loadingElement.classList.remove('hidden');
+                outputElement.classList.add('hidden');
+                outputElement.innerHTML = ''; 
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        outputElement.innerHTML = text;
+                        outputElement.classList.remove('hidden');
+                    } else {
+                        outputElement.innerHTML = '<p class="text-red-500">Error: Could not generate response. Please try again.</p>';
+                        outputElement.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    outputElement.innerHTML = `<p class="text-red-500">Error: ${error.message}. Please check your network connection or try again later.</p>`;
+                    outputElement.classList.remove('hidden');
+                } finally {
+                    loadingElement.classList.add('hidden');
+                }
+            }
+
+            generateSummaryBtn.addEventListener('click', () => {
+                const prompt = `Generate a concise, impactful, 3-4 sentence summary of the following resume. Focus on key strengths, experience, and value proposition:\n\n${resumeData.fullFormalResume}`;
+                callGeminiAPI(prompt, aiSummaryText, aiSummaryLoading);
+                aiSummaryOutput.classList.remove('hidden');
+            });
+
+            generateInterviewQuestionsBtn.addEventListener('click', () => {
+                if (currentSelectedExperienceIndex === -1) {
+                    interviewQuestionsText.innerHTML = 'Please select an experience from the timeline first.';
+                    interviewQuestionsOutput.classList.remove('hidden');
+                    return;
+                }
+                const selectedExperience = resumeData.experience[currentSelectedExperienceIndex];
+                const experienceText = `Role: ${selectedExperience.role} at ${selectedExperience.company}. Details: ${selectedExperience.details.join(' ')}`;
+                const prompt = `Based on the following work experience, generate 3-5 potential interview questions that a hiring manager might ask. Focus on behavioral, technical, and situational questions relevant to the role and responsibilities:\n\n${experienceText}`;
+                
+                callGeminiAPI(prompt, interviewQuestionsText, interviewQuestionsLoading);
+                interviewQuestionsOutput.classList.remove('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>

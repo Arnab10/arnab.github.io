@@ -10,17 +10,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --primary: #9d4edd;
-            --secondary: #00ccff;
-            --accent: #ff6b6b;
-            --dark: #0f0c1d;
-            --darker: #070514;
-            --light: #f8f9fa;
-            --gray: #2a2a40;
+            --primary: #8a2be2;
+            --secondary: #00bfff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f0f0f0;
+            --gray: #2a2a2a;
         }
 
         body {
@@ -50,7 +49,7 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
         }
 
         .bullet:hover {
@@ -70,15 +69,13 @@
             right: 25px;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(30, 25, 50, 0.9);
+            background: rgba(40, 40, 40, 0.9);
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             opacity: 0;
             transition: opacity 0.3s;
             white-space: nowrap;
-            color: var(--light);
-            font-weight: 500;
         }
 
         .bullet:hover::after {
@@ -113,7 +110,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(157, 78, 221, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
             z-index: -1;
         }
 
@@ -141,7 +138,7 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--primary);
-            box-shadow: 0 0 40px rgba(157, 78, 221, 0.6);
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
         }
 
         .name {
@@ -151,7 +148,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 1px;
         }
 
@@ -159,7 +156,6 @@
             font-size: 1.5rem;
             margin-bottom: 30px;
             color: #bbb;
-            font-weight: 300;
         }
 
         .contact-info {
@@ -175,21 +171,19 @@
             align-items: center;
             gap: 10px;
             font-size: 1.1rem;
-            background: rgba(30, 25, 50, 0.6);
+            background: rgba(30, 30, 30, 0.6);
             padding: 12px 20px;
             border-radius: 30px;
             transition: all 0.3s;
-            border: 1px solid rgba(157, 78, 221, 0.3);
         }
 
         .contact-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.4);
-            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
         }
 
         .contact-item i {
-            color: var(--secondary);
+            color: var(--primary);
             font-size: 1.2rem;
         }
 
@@ -198,11 +192,10 @@
             margin: 0 auto;
             font-size: 1.1rem;
             line-height: 1.7;
-            background: rgba(30, 25, 50, 0.6);
+            background: rgba(30, 30, 30, 0.6);
             padding: 25px;
             border-radius: 15px;
             border-left: 3px solid var(--primary);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         /* Skills Section */
@@ -216,7 +209,6 @@
             text-align: center;
             position: relative;
             display: inline-block;
-            font-weight: 700;
         }
 
         .section-title::after {
@@ -238,27 +230,17 @@
         }
 
         .skill-category {
-            background: rgba(40, 35, 60, 0.7);
+            background: rgba(40, 40, 40, 0.6);
             border-radius: 15px;
             padding: 25px;
-            border: 1px solid rgba(157, 78, 221, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.4s, box-shadow 0.4s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.4s;
         }
 
         .skill-category:hover {
             transform: translateY(-10px);
             border-color: var(--primary);
-            box-shadow: 0 15px 30px rgba(157, 78, 221, 0.3);
-        }
-
-        .skill-category.expanded {
-            transform: scale(1.03);
-            box-shadow: 0 20px 40px rgba(157, 78, 221, 0.4);
-            z-index: 10;
         }
 
         .skill-category h3 {
@@ -268,12 +250,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 600;
         }
 
         .skill-category h3 i {
             font-size: 1.2rem;
-            color: var(--secondary);
         }
 
         .skill-list {
@@ -286,12 +266,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s;
-        }
-
-        .skill-list li:hover {
-            color: var(--secondary);
-            transform: translateX(5px);
         }
 
         .skill-list li:last-child {
@@ -302,24 +276,6 @@
             content: '▹';
             color: var(--secondary);
             font-size: 1.2rem;
-        }
-
-        .skill-summary {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.6s ease, padding 0.6s ease;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin-top: 15px;
-            padding: 0 15px;
-            color: #ddd;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .skill-category.expanded .skill-summary {
-            max-height: 200px;
-            padding: 15px;
         }
 
         /* Experience Section */
@@ -361,26 +317,11 @@
 
         .timeline-content {
             width: calc(50% - 40px);
-            background: rgba(40, 35, 60, 0.7);
+            background: rgba(40, 40, 40, 0.7);
             padding: 25px;
             border-radius: 15px;
-            border: 1px solid rgba(0, 204, 255, 0.3);
+            border: 1px solid rgba(0, 191, 255, 0.3);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.4s, box-shadow 0.4s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 204, 255, 0.3);
-        }
-
-        .timeline-content.expanded {
-            transform: scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 204, 255, 0.4);
-            z-index: 10;
         }
 
         .timeline-item:nth-child(odd) .timeline-content::after {
@@ -411,7 +352,6 @@
             font-size: 1.4rem;
             margin-bottom: 10px;
             color: var(--secondary);
-            font-weight: 600;
         }
 
         .timeline-period {
@@ -419,7 +359,6 @@
             color: var(--primary);
             margin-bottom: 15px;
             display: block;
-            font-weight: 500;
         }
 
         .timeline-details {
@@ -430,11 +369,6 @@
             padding: 8px 0;
             position: relative;
             padding-left: 20px;
-            transition: all 0.3s;
-        }
-
-        .timeline-details li:hover {
-            color: var(--secondary);
         }
 
         .timeline-details li::before {
@@ -443,24 +377,6 @@
             left: 0;
             color: var(--primary);
             font-size: 1.2rem;
-        }
-
-        .timeline-summary {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.6s ease, padding 0.6s ease;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin-top: 15px;
-            padding: 0 15px;
-            color: #ddd;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .timeline-content.expanded .timeline-summary {
-            max-height: 200px;
-            padding: 15px;
         }
 
         /* Education Section */
@@ -477,25 +393,22 @@
         }
 
         .education-card {
-            background: rgba(40, 35, 60, 0.7);
+            background: rgba(40, 40, 40, 0.6);
             border-radius: 15px;
             padding: 30px;
-            border: 1px solid rgba(157, 78, 221, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             transition: transform 0.4s;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .education-card:hover {
             transform: translateY(-10px);
             border-color: var(--primary);
-            box-shadow: 0 15px 30px rgba(157, 78, 221, 0.3);
         }
 
         .education-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
             color: var(--secondary);
-            font-weight: 600;
         }
 
         .education-details {
@@ -525,7 +438,7 @@
         }
 
         .award-item {
-            background: rgba(40, 35, 60, 0.7);
+            background: rgba(40, 40, 40, 0.6);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
@@ -534,17 +447,14 @@
             gap: 20px;
             align-items: flex-start;
             transition: transform 0.3s;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .award-item:hover {
             transform: translateX(10px);
-            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
-            border-left: 4px solid var(--accent);
         }
 
         .award-icon {
-            background: rgba(157, 78, 221, 0.1);
+            background: rgba(138, 43, 226, 0.1);
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -553,12 +463,6 @@
             align-items: center;
             font-size: 1.5rem;
             color: var(--primary);
-            transition: all 0.3s;
-        }
-
-        .award-item:hover .award-icon {
-            background: rgba(255, 107, 107, 0.2);
-            color: var(--accent);
         }
 
         .award-content h3 {
@@ -576,10 +480,9 @@
         footer {
             text-align: center;
             padding: 20px;
-            background: rgba(10, 8, 20, 0.8);
+            background: rgba(10, 10, 10, 0.8);
             font-size: 0.9rem;
             color: #888;
-            border-top: 1px solid rgba(157, 78, 221, 0.3);
         }
 
         /* Animations */
@@ -594,23 +497,13 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(157, 78, 221, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(157, 78, 221, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(157, 78, 221, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(138, 43, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
         }
 
         .bullet.active {
             animation: pulse 2s infinite;
-        }
-
-        @keyframes expand {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1.03); }
-        }
-
-        .timeline-content.expanded, .skill-category.expanded {
-            animation: expand 0.4s ease-out;
         }
 
         /* Responsive */
@@ -709,9 +602,6 @@
                         <li>Microservice Architecture</li>
                         <li>ServiceNow Platform</li>
                     </ul>
-                    <div class="skill-summary">
-                        <p>Specializing in building scalable backend systems with Java frameworks. Expertise in microservices architecture, RESTful APIs, and cloud-native development patterns.</p>
-                    </div>
                 </div>
                 
                 <div class="skill-category">
@@ -721,9 +611,6 @@
                         <li>Stream Processing with Tibco EMS</li>
                         <li>Asynchronous Processing</li>
                     </ul>
-                    <div class="skill-summary">
-                        <p>Experienced in designing efficient database schemas and implementing messaging systems for distributed applications. Proficient in both SQL and NoSQL solutions.</p>
-                    </div>
                 </div>
                 
                 <div class="skill-category">
@@ -733,9 +620,6 @@
                         <li>JavaScript (ES8)</li>
                         <li>Python, C++</li>
                     </ul>
-                    <div class="skill-summary">
-                        <p>Building modern UIs with React and JavaScript. Also skilled in Python for scripting and data analysis, and C++ for performance-critical applications.</p>
-                    </div>
                 </div>
                 
                 <div class="skill-category">
@@ -745,9 +629,6 @@
                         <li>CI/CD - Jenkins, Spinnaker</li>
                         <li>Performance Testing & Monitoring</li>
                     </ul>
-                    <div class="skill-summary">
-                        <p>Implementing CI/CD pipelines and container orchestration. Focused on automation, infrastructure as code, and optimizing deployment workflows.</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -763,15 +644,12 @@
                         <h3 class="timeline-title">Software Engineer</h3>
                         <span class="timeline-period">ServiceNow | Apr'23 - Present</span>
                         <ul class="timeline-details">
-                            <li>Collaborated with Product Manager to gather and analyze requirements</li>
+                            <li>Collaborated with Product Manager to gather and analyze requirements and create design doc</li>
                             <li>Building and developing applications in ServiceNow platform</li>
                             <li>Analyzed system performance and improved efficiency by 60%</li>
                             <li>Integrated async processing to reduce execution time</li>
-                            <li>Created comprehensive design documentation</li>
+                            <li>Integrated NowLLM with Certificate Management app for interactive Renewal/li>
                         </ul>
-                        <div class="timeline-summary">
-                            <p>At ServiceNow, I've focused on building enterprise applications that streamline business processes. My key achievements include optimizing system performance and implementing asynchronous processing to handle high-volume tasks efficiently.</p>
-                        </div>
                     </div>
                 </div>
                 
@@ -786,9 +664,6 @@
                             <li>Implemented CI/CD pipeline using Jenkins and Spinnaker</li>
                             <li>Performance testing with jMeter and jConsole</li>
                         </ul>
-                        <div class="timeline-summary">
-                            <p>Developed a modern microservices architecture for healthcare applications. Led the implementation of CI/CD pipelines and created internal tools using React.js that improved team productivity by 30%.</p>
-                        </div>
                     </div>
                 </div>
                 
@@ -802,9 +677,6 @@
                             <li>Added new features as per client requirements</li>
                             <li>Supported go-live and resolved client issues</li>
                         </ul>
-                        <div class="timeline-summary">
-                            <p>Played a key role in developing an insurance portal that processed over 10,000 policies daily. Received recognition for quickly resolving critical production issues during the go-live phase.</p>
-                        </div>
                     </div>
                 </div>
                 
@@ -817,9 +689,6 @@
                             <li>Applied Data Analysis to US Venture Capitalist data</li>
                             <li>Created recommendation system based on analysis</li>
                         </ul>
-                        <div class="timeline-summary">
-                            <p>Developed a patent analysis system that helped researchers identify emerging technology trends. Created a recommendation engine that matched venture capitalists with promising research projects.</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -910,7 +779,7 @@
     </section>
 
     <footer>
-        <p>Arnab Bhattacharya &copy; 2025 | Resume</p>
+        <p>Arnab Bhattacharya &copy; 2025 | Curriculum Vitae</p>
     </footer>
 
     <script>
@@ -977,36 +846,6 @@
             
             sections.forEach(section => {
                 observer.observe(section);
-            });
-            
-            // Expandable cards functionality
-            const skillCards = document.querySelectorAll('.skill-category');
-            const expCards = document.querySelectorAll('.timeline-content');
-            
-            skillCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Close other expanded cards
-                    skillCards.forEach(otherCard => {
-                        if (otherCard !== this) {
-                            otherCard.classList.remove('expanded');
-                        }
-                    });
-                    // Toggle current card
-                    this.classList.toggle('expanded');
-                });
-            });
-            
-            expCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Close other expanded cards
-                    expCards.forEach(otherCard => {
-                        if (otherCard !== this) {
-                            otherCard.classList.remove('expanded');
-                        }
-                    });
-                    // Toggle current card
-                    this.classList.toggle('expanded');
-                });
             });
         });
     </script>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arnab Bhattacharya - Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      color: #fff;
+      padding: 60px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    section {
+      padding: 80px 20px;
+      max-width: 900px;
+      margin: auto;
+      background: #1e1e1e;
+      margin-top: 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 30px;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #cccccc;
+    }
+
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 15px;
+      height: 15px;
+      background: linear-gradient(135deg, #4ca1af, #2c3e50);
+      border-radius: 50%;
+      animation: bulletPulse 1.5s infinite;
+    }
+
+    @keyframes bulletPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    a {
+      color: #4ca1af;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Arnab Bhattacharya</h1>
+    <p>Email: <a href="mailto:arnabhattacharya10@gmail.com">arnabhattacharya10@gmail.com</a> | Phone: (+91) 6289402839</p>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>An energetic, ambitious problem solver with over 5 years of experience in software engineering, known for collaborating with teams to deliver high-quality solutions efficiently.</p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>Spring Boot (Java SE 8)</li>
+      <li>Spring Cloud</li>
+      <li>Stream Processing with Tibco EMS</li>
+      <li>Docker/Kubernetes</li>
+      <li>MySQL/Oracle DB</li>
+      <li>CI/CD - Jenkins, Spinnaker</li>
+      <li>Front end frameworks: React.js, JSP</li>
+      <li>Other Programming Languages: Python, C++, JavaScript (ES8)</li>
+    </ul>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <ul>
+      <li><strong>Software Engineer, ServiceNow (Apr 2023 - Present)</strong><br>
+        Building and developing applications, resolving defects, optimizing system performance by 60%, integrating async processing, and producing comprehensive design documentation.
+      </li>
+      <li><strong>Software Engineer 2, Oracle Cerner (Dec 2021 - Apr 2023)</strong><br>
+        Microservices architecture, async processing, React.js UIs, performance testing, and CI/CD pipelines.
+      </li>
+      <li><strong>Software Developer, TCS (Jul 2019 - Dec 2021)</strong><br>
+        Insurance web portal, backend fixes, client go-lives, and feature development.
+      </li>
+      <li><strong>Data Analytics Intern, CSIR-CDRI (Jan 2019 - May 2019)</strong><br>
+        Patent extraction, data analysis, recommendation systems.
+      </li>
+    </ul>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <ul>
+      <li><strong>B.Tech in ECE</strong> - IEM, Saltlake (2015-2019) | CGPA: 8.15/10</li>
+      <li><strong>M.Tech in AI</strong> - IIT Patna (2024-2026)</li>
+    </ul>
+  </section>
+
+  <section id="awards">
+    <h2>Awards & Recognition</h2>
+    <ul>
+      <li>TCS – On the Spot Award (15 Dec 2020)</li>
+      <li>School Topper in Mathematics (12th AISSCE)</li>
+      <li>Hi-Talent Award and early promotion at TCS</li>
+      <li>LLAMA Award for best employee in Q1 2024</li>
+      <li>Client appreciation letter for outstanding go-live phase</li>
+    </ul>
+  </section>
+
+  <script>
+    // Intersection Observer for fade-in animation
+    const sections = document.querySelectorAll('section');
+    const options = { threshold: 0.3 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+
+    sections.forEach(section => observer.observe(section));
+
+    // Smooth scroll on anchor clicks (if any)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

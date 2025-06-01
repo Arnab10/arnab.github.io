@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arnab Bhattacharya - Resume</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: #f7fafc; }
+    .tab { display: none; }
+    .tab-active { display: block; }
+    .tab-button { cursor: pointer; }
+    .tab-button-active { background-color: #4299e1; color: white; }
+  </style>
+</head>
+<body class="font-sans">
+
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded shadow mt-8">
+    <h1 class="text-4xl font-bold mb-2">Arnab Bhattacharya</h1>
+    <p class="text-gray-600 mb-4">arnabhattacharya10@gmail.com | (+91)6289402839</p>
+
+    <!-- Tabs -->
+    <div class="flex space-x-4 border-b mb-6">
+      <button class="tab-button px-4 py-2 border rounded-t" onclick="showTab('about')">About</button>
+      <button class="tab-button px-4 py-2 border rounded-t" onclick="showTab('skills')">Skills</button>
+      <button class="tab-button px-4 py-2 border rounded-t" onclick="showTab('experience')">Experience</button>
+      <button class="tab-button px-4 py-2 border rounded-t" onclick="showTab('education')">Education</button>
+      <button class="tab-button px-4 py-2 border rounded-t" onclick="showTab('awards')">Awards</button>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="about" class="tab tab-active">
+      <h2 class="text-2xl font-semibold mb-2">About Me</h2>
+      <p>An energetic, ambitious problem solver with over 5 years of software engineering experience, collaborating with teams to achieve objectives efficiently and accurately.</p>
+    </div>
+
+    <div id="skills" class="tab">
+      <h2 class="text-2xl font-semibold mb-2">Skills</h2>
+      <canvas id="skillsChart" class="mb-4"></canvas>
+      <ul class="list-disc ml-6">
+        <li>Spring Boot (Java SE 8), Spring Cloud</li>
+        <li>Stream Processing with Tibco EMS</li>
+        <li>Docker/Kubernetes</li>
+        <li>MySQL/Oracle DB</li>
+        <li>CI/CD: Jenkins, Spinnaker</li>
+        <li>Front-end: React.js, JSP</li>
+        <li>Other languages: Python, C++, JavaScript (ES8)</li>
+      </ul>
+    </div>
+
+    <div id="experience" class="tab">
+      <h2 class="text-2xl font-semibold mb-2">Experience Timeline</h2>
+      <canvas id="experienceTimeline"></canvas>
+    </div>
+
+    <div id="education" class="tab">
+      <h2 class="text-2xl font-semibold mb-2">Education</h2>
+      <ul class="list-disc ml-6">
+        <li>B.Tech in ECE (2015-2019) from IEM, Saltlake (M.A.K.A.U.T) CGPA: 8.15/10</li>
+        <li>M.Tech in AI from IIT Patna (2024-2026)</li>
+      </ul>
+    </div>
+
+    <div id="awards" class="tab">
+      <h2 class="text-2xl font-semibold mb-2">Awards and Appreciation</h2>
+      <ul class="list-disc ml-6">
+        <li>TCS – On the Spot Award for Performance (15 Dec’20)</li>
+        <li>School Topper in Mathematics in 12th AISSCE</li>
+        <li>Hi-Talent award in TCS with early Promotion</li>
+        <li>LLAMA Award for Best Employee in Q1 2024</li>
+        <li>Client Appreciation Letter for Outstanding Go-Live Phase</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabs = document.querySelectorAll('.tab');
+    function showTab(id) {
+      tabs.forEach(tab => tab.classList.remove('tab-active'));
+      tabButtons.forEach(btn => btn.classList.remove('tab-button-active'));
+      document.getElementById(id).classList.add('tab-active');
+      event.target.classList.add('tab-button-active');
+    }
+
+    // Skill Distribution Chart
+    const skillsChartCtx = document.getElementById('skillsChart').getContext('2d');
+    new Chart(skillsChartCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Spring Boot', 'Spring Cloud', 'Tibco EMS', 'Docker/K8s', 'MySQL/Oracle DB', 'CI/CD', 'Frontend', 'Other Languages'],
+        datasets: [{
+          data: [20, 15, 10, 10, 10, 10, 15, 10],
+          backgroundColor: ['#3182ce', '#2b6cb0', '#4a5568', '#718096', '#a0aec0', '#cbd5e0', '#e2e8f0', '#edf2f7'],
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+
+    // Experience Timeline Chart
+    const experienceCtx = document.getElementById('experienceTimeline').getContext('2d');
+    new Chart(experienceCtx, {
+      type: 'bar',
+      data: {
+        labels: ['TCS (Jul’19-Dec’21)', 'Oracle Cerner (Dec’21-Apr’23)', 'ServiceNow (Apr’23-Present)'],
+        datasets: [{
+          label: 'Experience Duration (months)',
+          data: [30, 16, 13],
+          backgroundColor: '#4299e1'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnab Bhattacharya | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --secondary: #ff6b00;
+            --dark: #121212;
+            --light: #ffffff;
+            --accent: #ffaa00;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%);
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Animated Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s, width 0.3s, height 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.6s, height 0.6s, background 0.3s;
+        }
+
+        .cursor.active {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: var(--secondary);
+            border-color: transparent;
+        }
+
+        .cursor-follower.active {
+            transform: translate(-50%, -50%) scale(3);
+            background: rgba(255, 107, 0, 0.4);
+        }
+
+        /* Header Styles */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, rgba(18, 18, 18, 0) 70%);
+            z-index: -1;
+        }
+
+        .pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: pulse 4s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+        }
+
+        .name {
+            font-size: 5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--light), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-icon {
+            color: var(--secondary);
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) translateX(-50%); }
+            50% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        .scroll-down span {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 10%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .content-box {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: var(--transition);
+        }
+
+        .content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(138, 43, 226, 0.2);
+            border-color: rgba(138, 43, 226, 0.4);
+        }
+
+        /* About Section */
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            margin-bottom: 2rem;
+        }
+
+        .skill-category h3 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-category ul {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .skill-category li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .skill-category li:before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+        }
+
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--dark);
+            border: 3px solid var(--secondary);
+            border-radius: 50%;
+            top: 30px;
+        }
+
+        .timeline-item:nth-child(odd):before {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even):before {
+            left: -10px;
+        }
+
+        .timeline-content {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--primary);
+        }
+
+        .timeline-content:hover {
+            border-left-color: var(--accent);
+        }
+
+        .job-title {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .duration {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .responsibilities {
+            list-style-type: none;
+        }
+
+        .responsibilities li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .responsibilities li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Education Section */
+        .education-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .education-item {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .education-item:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.2);
+        }
+
+        .degree {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .institution {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .education-duration {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        /* Awards Section */
+        .awards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .award-card {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            border-top: 3px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .award-card:hover {
+            transform: translateY(-5px);
+            border-top-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(255, 107, 0, 0.2);
+        }
+
+        .award-title {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .award-issuer {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .award-date {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(20, 20, 20, 0.8);
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .name {
+                font-size: 3.5rem;
+            }
+            
+            .timeline:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                left: 0 !important;
+            }
+            
+            .timeline-item:nth-child(odd):before,
+            .timeline-item:nth-child(even):before {
+                left: 20px;
+            }
+            
+            section {
+                padding: 4rem 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-bg"></div>
+        <div class="pulse"></div>
+        <h1 class="name">Arnab Bhattacharya</h1>
+        <p class="tagline">Software Engineer | Problem Solver | Innovator</p>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-envelope contact-icon"></i>
+                <span>arnabhattacharya10@gmail.com</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone contact-icon"></i>
+                <span>(+91) 6289402839</span>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+            <span>Scroll to Explore</span>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="content-box hidden">
+            <h2 class="section-title">About Me</h2>
+            <p class="about-text">
+                An energetic, ambitious problem solver who has developed a mature and responsible approach to any undertaking task. With more than 6 years of experience in software engineering, I show excellence in working with collaborators to achieve objectives on time and with accuracy.
+            </p>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" style="background: rgba(20, 20, 30, 0.5);">
+        <div class="content-box hidden">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> Backend</h3>
+                    <ul>
+                        <li>Spring Boot (Java SE 8)</li>
+                        <li>Spring Cloud</li>
+                        <li>Stream Processing with Tibco EMS</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-cloud"></i> DevOps & Cloud</h3>
+                    <ul>
+                        <li>Docker/Kubernetes</li>
+                        <li>CI/CD - Jenkins, Spinnaker</li>
+                        <li>Application Infrastructure Monitoring</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Databases</h3>
+                    <ul>
+                        <li>MySQL</li>
+                        <li>Oracle DB</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Frontend & Languages</h3>
+                    <ul>
+                        <li>React.js, JSP</li>
+                        <li>Python, C++, JavaScript (ES8)</li>
+                        <li>API Testing with Postman</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="content-box hidden">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="timeline">
+                <!-- ServiceNow -->
+                <div class="timeline-item hidden">
+                    <div class="timeline-content">
+                        <h3 class="job-title">Software Engineer</h3>
+                        <span class="company">Servicenow</span>
+                        <span class="duration">Apr 2023 - Present</span>
+                        <ul class="responsibilities">
+                            <li>Collaborated with Product Manager to gather and analyze requirements, translating them to robust and high-impact features</li>
+                            <li>Building and developing application in ServiceNow platform</li>
+                            <li>Worked closely with QE to resolve defects and support to address production issues</li>
+                            <li>Analyzed system performance and identified bottlenecks to improve the overall efficiency and scalability by 60%</li>
+                            <li>Integrated async processing to streamline execution flow to reduce execution time</li>
+                            <li>Created comprehensive design documentation detailing system designs, user guides and technical specifications</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Oracle Cerner -->
+                <div class="timeline-item hidden">
+                    <div class="timeline-content">
+                        <h3 class="job-title">Software Engineer 2</h3>
+                        <span class="company">Oracle Cerner</span>
+                        <span class="duration">Dec 2021 - Apr 2023</span>
+                        <ul class="responsibilities">
+                            <li>Created Event driven Microservice architecture with spring cloud backed by MySql database</li>
+                            <li>Asynchronous Stream Processing using Spring Cloud Stream with Tibco EMS</li>
+                            <li>Created UI using React js to log specific transactions</li>
+                            <li>Monitoring the production environment and gathering data for performance analysis</li>
+                            <li>Api Testing using Postman test scripts</li>
+                            <li>CI/CD pipeline using Jenkins and Spinnaker</li>
+                            <li>Performance testing with jMeter, jConsole, and Newrelic</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- TCS -->
+                <div class="timeline-item hidden">
+                    <div class="timeline-content">
+                        <h3 class="job-title">Software Developer</h3>
+                        <span class="company">TATA CONSULTANCY SERVICES</span>
+                        <span class="duration">July 2019 - Dec 2021</span>
+                        <ul class="responsibilities">
+                            <li>Contributed in developing Insurance web portal using Spring MVC Architecture backed by ORACLE Database</li>
+                            <li>Fixed defect in the backend Rules Engine</li>
+                            <li>Added new feature as per client requirements</li>
+                            <li>Supported go-live of application and resolved client issues with immediate actions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Internship -->
+                <div class="timeline-item hidden">
+                    <div class="timeline-content">
+                        <h3 class="job-title">Data Analytics Intern</h3>
+                        <span class="company">Central Drug Research Institute (CSIR-CDRI)</span>
+                        <span class="duration">Jan 2019 - May 2019</span>
+                        <ul class="responsibilities">
+                            <li>Extracting information of Patents from USPTO Website</li>
+                            <li>Applied Data Analysis to US Venture Capitalist data Samples</li>
+                            <li>Created recommendation system based on analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" style="background: rgba(20, 20, 30, 0.5);">
+        <div class="content-box hidden">
+            <h2 class="section-title">Education</h2>
+            <div class="education-container">
+                <div class="education-item hidden">
+                    <h3 class="degree">M.Tech in Artificial Intelligence</h3>
+                    <p class="institution">IIT Patna</p>
+                    <p class="education-duration">2024 - 2026</p>
+                </div>
+                <div class="education-item hidden">
+                    <h3 class="degree">B.Tech in Electronics & Communication</h3>
+                    <p class="institution">IEM, Saltlake (M.A.K.A.U.T)</p>
+                    <p class="education-duration">2015 - 2019</p>
+                    <p>CGPA: 8.15/10</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section id="awards">
+        <div class="content-box hidden">
+            <h2 class="section-title">Awards & Recognition</h2>
+            <div class="awards-container">
+                <div class="award-card hidden">
+                    <h3 class="award-title">LLAMA Award for Best Employee</h3>
+                    <p class="award-issuer">ServiceNow</p>
+                    <p class="award-date">Q1 2024</p>
+                </div>
+                <div class="award-card hidden">
+                    <h3 class="award-title">On the Spot Award for Performance</h3>
+                    <p class="award-issuer">TATA Consultancy Services</p>
+                    <p class="award-date">15 Dec 2020</p>
+                </div>
+                <div class="award-card hidden">
+                    <h3 class="award-title">Hi-Talent & Early Promotion</h3>
+                    <p class="award-issuer">TATA Consultancy Services</p>
+                    <p class="award-date">2021</p>
+                </div>
+                <div class="award-card hidden">
+                    <h3 class="award-title">Client Appreciation Letter</h3>
+                    <p class="award-issuer">Outstanding go-live phase</p>
+                    <p class="award-date">2020</p>
+                </div>
+                <div class="award-card hidden">
+                    <h3 class="award-title">School Topper in Mathematics</h3>
+                    <p class="award-issuer">12th AISSCE</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Arnab Bhattacharya | Software Engineer Portfolio</p>
+        <p>Designed with ❤️ using HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script>
+        // Animated Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            
+            setTimeout(() => {
+                cursorFollower.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            }, 100);
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('active');
+            cursorFollower.classList.add('active');
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('active');
+            cursorFollower.classList.remove('active');
+        });
+        
+        // Hover effects for links and buttons
+        const hoverElements = document.querySelectorAll('a, button, .timeline-content, .education-item, .award-card');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+            });
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
